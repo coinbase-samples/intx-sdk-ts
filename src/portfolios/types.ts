@@ -248,6 +248,24 @@ export type GetInstrumentPositionLimitRequest = {
 
 export type GetInstrumentPositionLimitResponse = OpenPositionLimit;
 
+export type GetFundTransferLimitRequest = {
+  /**
+   * Identifies the portfolio by UUID (e.g., 892e8c7c-e979-4cad-b61b-55a197932cf1) or portfolio ID (e.g., 5189861793641175)
+   */
+  portfolio: string;
+  /**
+   * Identifies the asset by name (e.g., BTC), UUID (e.g., 291efb0f-2396-4d41-ad03-db3b2311cb2c), or asset ID (e.g., 1482439423963469)
+   */
+  asset: string;
+};
+
+export type GetFundTransferLimitResponse = {
+  /**
+   * max portfolio transfer amount
+   */
+  maxPortfolioTransferAmount: string;
+};
+
 /**
  * Update endpoints
  */

@@ -31,6 +31,8 @@ import {
   ListFillsResponse,
   ListPortfolioFillsRequest,
   ListPortfolioFillsResponse,
+  ListPortfolioFeeRatesRequest,
+  ListPortfolioFeeRatesResponse,
   GetPortfolioRequest,
   GetPortfolioResponse,
   GetPortfolioDetailsRequest,
@@ -49,6 +51,8 @@ import {
   GetOpenPositionLimitResponse,
   GetInstrumentPositionLimitRequest,
   GetInstrumentPositionLimitResponse,
+  GetFundTransferLimitRequest,
+  GetFundTransferLimitResponse,
   CreatePortfolioRequest,
   CreatePortfolioResponse,
   PreviewLoanUpdateRequest,
@@ -120,6 +124,14 @@ export interface IPortfoliosService {
     | CoinbaseIntxClientException
     | CoinbaseIntxException
   >;
+  listPortfolioFeeRates(
+    request: ListPortfolioFeeRatesRequest,
+    options?: CoinbaseCallOptions
+  ): Promise<
+    | ListPortfolioFeeRatesResponse
+    | CoinbaseIntxClientException
+    | CoinbaseIntxException
+  >;
   getInstrumentPosition(
     request: GetInstrumentPositionRequest,
     options?: CoinbaseCallOptions
@@ -141,6 +153,14 @@ export interface IPortfoliosService {
     options?: CoinbaseCallOptions
   ): Promise<
     | GetInstrumentPositionLimitResponse
+    | CoinbaseIntxClientException
+    | CoinbaseIntxException
+  >;
+  getFundTransferLimit(
+    request: GetFundTransferLimitRequest,
+    options?: CoinbaseCallOptions
+  ): Promise<
+    | GetFundTransferLimitResponse
     | CoinbaseIntxClientException
     | CoinbaseIntxException
   >;
@@ -333,6 +353,22 @@ export class PortfoliosService implements IPortfoliosService {
     return response.data as ListPortfolioFillsResponse;
   }
 
+  async listPortfolioFeeRates(
+    request: ListPortfolioFeeRatesRequest,
+    options?: CoinbaseCallOptions
+  ): Promise<
+    | ListPortfolioFeeRatesResponse
+    | CoinbaseIntxClientException
+    | CoinbaseIntxException
+  > {
+    const response = await this.client.request({
+      url: `portfolios/fee-rates`,
+      callOptions: options,
+    });
+
+    return response.data as ListPortfolioFeeRatesResponse;
+  }
+
   async getPortfolio(
     request: GetPortfolioRequest,
     options?: CoinbaseCallOptions
@@ -471,6 +507,23 @@ export class PortfoliosService implements IPortfoliosService {
     });
 
     return response.data as GetInstrumentPositionLimitResponse;
+  }
+
+  async getFundTransferLimit(
+    request: GetFundTransferLimitRequest,
+    options?: CoinbaseCallOptions
+  ): Promise<
+    | GetFundTransferLimitResponse
+    | CoinbaseIntxClientException
+    | CoinbaseIntxException
+  > {
+    const response = await this.client.request({
+      url: `portfolios/${request.portfolio}/${request.asset}/transfer-limits`,
+      bodyParams: { ...request, portfolio: undefined, asset: undefined },
+      callOptions: options,
+    });
+
+    return response.data as GetFundTransferLimitResponse;
   }
 
   async createPortfolio(

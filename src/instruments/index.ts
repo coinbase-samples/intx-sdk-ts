@@ -27,6 +27,8 @@ import {
   GetAggregatedCandlesResponse,
   GetHistoricalFundingRatesRequest,
   GetHistoricalFundingRatesResponse,
+  GetQuoteRequest,
+  GetQuoteResponse,
 } from './types';
 
 export interface IInstrumentsService {
@@ -71,6 +73,13 @@ export interface IInstrumentsService {
     | GetHistoricalFundingRatesResponse
     | CoinbaseIntxClientException
     | CoinbaseIntxException
+  >;
+
+  getQuote(
+    request: GetQuoteRequest,
+    options?: CoinbaseCallOptions
+  ): Promise<
+    GetQuoteResponse | CoinbaseIntxClientException | CoinbaseIntxException
   >;
 }
 
@@ -160,5 +169,20 @@ export class InstrumentsService implements IInstrumentsService {
     });
 
     return response.data as GetHistoricalFundingRatesResponse;
+  }
+
+  async getQuote(
+    request: GetQuoteRequest,
+    options?: CoinbaseCallOptions
+  ): Promise<
+    GetQuoteResponse | CoinbaseIntxClientException | CoinbaseIntxException
+  > {
+    const response = await this.client.request({
+      url: `instruments/${request.instrument}/quote`,
+      queryParams: request,
+      callOptions: options,
+    });
+
+    return response.data as GetQuoteResponse;
   }
 }
