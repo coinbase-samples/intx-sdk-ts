@@ -21,6 +21,8 @@ import {
   ListTransfersResponse,
   GetTransferRequest,
   GetTransferResponse,
+  GetCounterpartyWithdrawalLimitRequest,
+  GetCounterpartyWithdrawalLimitResponse,
   CreateCryptoAddressRequest,
   CreateCryptoAddressResponse,
   CreateCounterpartyRequest,
@@ -46,6 +48,15 @@ export interface ITransfersService {
     options?: CoinbaseCallOptions
   ): Promise<
     GetTransferResponse | CoinbaseIntxClientException | CoinbaseIntxException
+  >;
+
+  getCounterpartyWithdrawalLimit(
+    request: GetCounterpartyWithdrawalLimitRequest,
+    options?: CoinbaseCallOptions
+  ): Promise<
+    | GetCounterpartyWithdrawalLimitResponse
+    | CoinbaseIntxClientException
+    | CoinbaseIntxException
   >;
 
   createCryptoAddress(
@@ -128,6 +139,22 @@ export class TransfersService implements ITransfersService {
     });
 
     return response.data as GetTransferResponse;
+  }
+
+  async getCounterpartyWithdrawalLimit(
+    request: GetCounterpartyWithdrawalLimitRequest,
+    options?: CoinbaseCallOptions
+  ): Promise<
+    | GetCounterpartyWithdrawalLimitResponse
+    | CoinbaseIntxClientException
+    | CoinbaseIntxException
+  > {
+    const response = await this.client.request({
+      url: `transfers/withdraw/${request.portfolio}/${request.asset}/counterparty-withdrawal-limit`,
+      callOptions: options,
+    });
+
+    return response.data as GetCounterpartyWithdrawalLimitResponse;
   }
 
   async createCryptoAddress(

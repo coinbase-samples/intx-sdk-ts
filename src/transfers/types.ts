@@ -68,6 +68,24 @@ export type GetTransferRequest = {
 
 export type GetTransferResponse = Transfer;
 
+export type GetCounterpartyWithdrawalLimitRequest = {
+  /**
+   * Identifies the portfolios by UUID (e.g., 892e8c7c-e979-4cad-b61b-55a197932cf1) or portfolio ID (e.g., 5189861793641175). Can provide single or multiple portfolios to filter by or fetches transfers for all portfolios if none are provided.
+   */
+  portfolio: string;
+  /**
+   * Identifies the asset by name (e.g., BTC), UUID (e.g., 291efb0f-2396-4d41-ad03-db3b2311cb2c), or asset ID (e.g., 1482439423963469)
+   */
+  asset: string;
+};
+
+export type GetCounterpartyWithdrawalLimitResponse = {
+  /**
+   * counterparty withdrawal limit
+   */
+  maxCtnWithdrawAmount: string;
+};
+
 export type CreateCryptoAddressRequest = CreateAddressRequest;
 
 export type CreateCryptoAddressResponse = AddressResponse;
